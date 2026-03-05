@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winder.pay.mapper.RepaymentOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.winder.pay.domain.entity.RepaymentOrder">
+        <id column="id" property="id"/>
+        <result column="created_at" property="createdAt" typeHandler="com.winder.common.mybatis.InstantTypeHandler"/>
+        <result column="updated_at" property="updatedAt" typeHandler="com.winder.common.mybatis.InstantTypeHandler"/>
+        <result column="biz_repay_no" property="bizRepayNo"/>
+        <result column="loan_no" property="loanNo"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="channel_serial_no" property="channelSerialNo"/>
+        <result column="amount" property="amount"/>
+        <result column="payer_id" property="payerId"/>
+        <result column="payer_account" property="payerAccount"/>
+        <result column="status" property="status"/>
+        <result column="fail_reason" property="failReason"/>
+        <result column="retry_count" property="retryCount"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pay_repayment_order (created_at, updated_at, biz_repay_no, loan_no, channel_code, channel_serial_no,
+            amount, payer_id, payer_account, status, fail_reason, retry_count)
+        VALUES (#{createdAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            #{updatedAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            #{bizRepayNo}, #{loanNo}, #{channelCode}, #{channelSerialNo}, #{amount}, #{payerId}, #{payerAccount},
+            #{status}, #{failReason}, #{retryCount})
+    </insert>
+
+    <update id="updateById">
+        UPDATE pay_repayment_order
+        SET updated_at = #{updatedAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            channel_serial_no = #{channelSerialNo}, status = #{status}, fail_reason = #{failReason}, retry_count = #{retryCount}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByBizRepayNo" resultMap="BaseResultMap">
+        SELECT * FROM pay_repayment_order WHERE biz_repay_no = #{bizRepayNo}
+    </select>
+
+    <select id="selectByLoanNoOrderByCreatedAtDesc" resultMap="BaseResultMap">
+        SELECT * FROM pay_repayment_order WHERE loan_no = #{loanNo} ORDER BY created_at DESC
+    </select>
+</mapper>

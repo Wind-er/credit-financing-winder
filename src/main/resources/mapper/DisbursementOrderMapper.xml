@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winder.pay.mapper.DisbursementOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.winder.pay.domain.entity.DisbursementOrder">
+        <id column="id" property="id"/>
+        <result column="created_at" property="createdAt" typeHandler="com.winder.common.mybatis.InstantTypeHandler"/>
+        <result column="updated_at" property="updatedAt" typeHandler="com.winder.common.mybatis.InstantTypeHandler"/>
+        <result column="biz_order_no" property="bizOrderNo"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="channel_serial_no" property="channelSerialNo"/>
+        <result column="amount" property="amount"/>
+        <result column="payee_id" property="payeeId"/>
+        <result column="payee_name" property="payeeName"/>
+        <result column="payee_account" property="payeeAccount"/>
+        <result column="payee_bank_code" property="payeeBankCode"/>
+        <result column="status" property="status"/>
+        <result column="fail_reason" property="failReason"/>
+        <result column="retry_count" property="retryCount"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pay_disbursement_order (created_at, updated_at, biz_order_no, channel_code, channel_serial_no,
+            amount, payee_id, payee_name, payee_account, payee_bank_code, status, fail_reason, retry_count)
+        VALUES (#{createdAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            #{updatedAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            #{bizOrderNo}, #{channelCode}, #{channelSerialNo}, #{amount}, #{payeeId}, #{payeeName}, #{payeeAccount},
+            #{payeeBankCode}, #{status}, #{failReason}, #{retryCount})
+    </insert>
+
+    <update id="updateById">
+        UPDATE pay_disbursement_order
+        SET updated_at = #{updatedAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            channel_serial_no = #{channelSerialNo}, status = #{status}, fail_reason = #{failReason}, retry_count = #{retryCount}
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByBizOrderNo" resultMap="BaseResultMap">
+        SELECT * FROM pay_disbursement_order WHERE biz_order_no = #{bizOrderNo}
+    </select>
+
+    <select id="existsByBizOrderNo" resultType="boolean">
+        SELECT COUNT(1) > 0 FROM pay_disbursement_order WHERE biz_order_no = #{bizOrderNo}
+    </select>
+</mapper>

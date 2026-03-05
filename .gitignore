@@ -1,0 +1,31 @@
+# Maven
+target/
+pom.xml.tag
+pom.releaseBackup
+*.jar
+*.war
+*.ear
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.vscode/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Spring Boot
+application-local.yml
+application-local.yaml

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.winder.pay.mapper.ReconciliationRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.winder.pay.domain.entity.ReconciliationRecord">
+        <id column="id" property="id"/>
+        <result column="created_at" property="createdAt" typeHandler="com.winder.common.mybatis.InstantTypeHandler"/>
+        <result column="updated_at" property="updatedAt" typeHandler="com.winder.common.mybatis.InstantTypeHandler"/>
+        <result column="recon_date" property="reconDate"/>
+        <result column="channel_code" property="channelCode"/>
+        <result column="payment_type" property="paymentType"/>
+        <result column="channel_serial_no" property="channelSerialNo"/>
+        <result column="amount" property="amount"/>
+        <result column="biz_order_no" property="bizOrderNo"/>
+        <result column="recon_result" property="reconResult"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pay_reconciliation_record (created_at, updated_at, recon_date, channel_code, payment_type,
+            channel_serial_no, amount, biz_order_no, recon_result, remark)
+        VALUES (#{createdAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            #{updatedAt, typeHandler=com.winder.common.mybatis.InstantTypeHandler},
+            #{reconDate}, #{channelCode}, #{paymentType}, #{channelSerialNo}, #{amount}, #{bizOrderNo}, #{reconResult}, #{remark})
+    </insert>
+
+    <select id="selectByDateAndChannelAndType" resultMap="BaseResultMap">
+        SELECT * FROM pay_reconciliation_record
+        WHERE recon_date = #{reconDate} AND channel_code = #{channelCode} AND payment_type = #{paymentType}
+    </select>
+
+    <select id="selectByDateOrderByChannelAndType" resultMap="BaseResultMap">
+        SELECT * FROM pay_reconciliation_record WHERE recon_date = #{reconDate}
+        ORDER BY channel_code ASC, payment_type ASC
+    </select>
+</mapper>
